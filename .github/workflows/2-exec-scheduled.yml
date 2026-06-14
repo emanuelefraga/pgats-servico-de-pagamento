@@ -1,6 +1,6 @@
 # CI de Nível 02 - Execução Agendada
 # nome da pipeline
-name: 'Execução Agendada'
+name: 'N2 - Execução Agendada'
 
 # define as permissões mínimas que o workflow terá
 permissions:
@@ -8,15 +8,21 @@ permissions:
 
 # gatilhos / triggers - regras de disparo
 on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
   schedule:
 
     # cronograma de execução
     # 1 - minuto, 2 - hora, 3 - dia do mês, 4 - mês, 5 - dia da semana
-    # roda a cada 30 minutos
-    - cron: '*/30 * * * *'
+    # roda hoje às 19h58 de Brasília (22h58 UTC) para evidência
+    - cron: '58 22 * * *'
 
-    # roda toda sexta-feira à meia noite
+    # roda toda sexta-feira à meia noite UTC
     - cron: '0 0 * * 5'
 
 # evita múltiplas execuções simultâneas para a mesma branch
@@ -28,8 +34,8 @@ jobs:
 
   # nome do job
   testes:
-    # máquina onde o job vai rodar
 
+    # máquina onde o job vai rodar
     runs-on: ubuntu-latest
 
     # tempo máximo de execução antes de cancelar automaticamente
@@ -54,15 +60,15 @@ jobs:
           cache: 'npm'
 
       # instalação das dependências
-      - name: Instalando dependências
+      - name: Instalar dependências
         run: npm ci
 
-      # executar os testes
+      # criar pasta e executar testes gerando relatório
       - name: Executando testes
         run: |
           mkdir -p test-results
           npm run test:report
-        
+          
       # salvar relatório
       - name: Salvando relatório de testes
         uses: actions/upload-artifact@v4

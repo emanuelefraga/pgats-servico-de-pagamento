@@ -28,34 +28,89 @@ npm install
 npm test
 ```
 
-## Pipeline de Integração Contínua
+## Como gerar o relatório localmente
 
-A pipeline está configurada no arquivo `.github/workflows/ci.yml` e contempla:
+```bash
+npm run test:report
+```
 
-### Formas de disparo
+O relatório será salvo em `test-results/relatorio.json`.
 
-| Tipo | Descrição |
+## Estrutura do projeto
+
+├── .github/
+│   └── workflows/
+│       ├── 1-exec-manual.yml       ← execução manual
+│       ├── 2-exec-scheduled.yml    ← execução agendada
+│       └── 3-exec-push.yml         ← execução por push
+├── src/
+│   └── servicoDePagamento.js
+├── test/
+│   └── servicoDePagamento.test.js
+├── package.json
+└── README.md
+
+## Pipelines de Integração Contínua
+
+As pipelines estão separadas em três arquivos dentro de `.github/workflows/`, cada uma com uma responsabilidade específica.
+
+### Execução Manual (`1-exec-manual.yml`)
+
+Disparada manualmente pelo usuário diretamente na aba **Actions** do GitHub.
+
+| Configuração | Valor |
 |---|---|
-| `push` | Executa automaticamente a cada push na branch `main` |
-| `workflow_dispatch` | Permite execução manual diretamente pelo GitHub |
-| `schedule` | Executa automaticamente toda segunda-feira às 08h (UTC) |
+| Trigger | `workflow_dispatch` |
+| Node.js | 18.x, 20.x, 22.x (matrix) |
+| Timeout | 15 minutos |
 
-### Etapas da pipeline
+### Execução Agendada (`2-exec-scheduled.yml`)
 
-1. **Clonar repositório** — baixa o código para o ambiente de execução
-2. **Instalar Node.js** — configura a versão 20 do Node.js
-3. **Instalar dependências** — executa `npm install`
-4. **Executar testes e gerar relatório** — roda o Mocha e salva o resultado em `relatorio.json`
+Disparada automaticamente em horários fixos, sem necessidade de intervenção humana.
+
+| Configuração | Valor |
+|---|---|
+| Trigger | `schedule` |
+| Agendamento 1 | A cada 30 minutos (`*/30 * * * *`) |
+| Agendamento 2 | Toda sexta-feira à meia-noite UTC (`0 0 * * 5`) |
+| Node.js | 18.x, 20.x, 22.x (matrix) |
+| Timeout | 15 minutos |
+
+### Execução por Push (`3-exec-push.yml`)
+
+Disparada automaticamente sempre que houver um push ou pull request na branch `main`.
+
+| Configuração | Valor |
+|---|---|
+| Trigger | `push` e `pull_request` na branch `main` |
+| Node.js | 18.x, 20.x, 22.x (matrix) |
+| Timeout | 15 minutos |
+
+## Etapas comuns às três pipelines
+
+1. **Checkout do código** — clona o repositório no ambiente de execução
+2. **Setup Node.js** — configura a versão do Node.js definida na matrix
+3. **Instalar dependências** — executa `npm ci` para instalação limpa e reproduzível
+4. **Executar testes** — roda o Mocha e gera o relatório em `test-results/`
 5. **Armazenar relatório** — faz upload do relatório como artefato da pipeline
 
-### Relatório de testes
+## Relatório de testes
 
-O relatório é gerado automaticamente a cada execução da pipeline e fica disponível na aba **Actions** do repositório, na seção **Artifacts**, com o nome `relatorio-de-testes`.
+O relatório é gerado automaticamente a cada execução e fica disponível na aba **Actions** do repositório, na seção **Artifacts**. Como as pipelines rodam em três versões do Node.js simultaneamente, são gerados três relatórios por execução:
+
+- `Relatorio-Testes-N1-Node-18.x`
+- `Relatorio-Testes-N1-Node-20.x`
+- `Relatorio-Testes-N1-Node-22.x`
 
 ## Conceitos aplicados
 
 - **Integração Contínua (CI)** — prática de executar testes automaticamente a cada mudança no código, garantindo que nada foi quebrado
 - **Pipeline** — sequência de etapas automatizadas que validam o projeto
-- **Artefatos** — arquivos gerados durante a pipeline e armazenados para consulta posterior
 - **Triggers** — formas de disparar a pipeline (push, manual, agendado)
 - **Schedule (cron)** — agendamento de execuções periódicas usando expressão cron
+- **Matrix** — estratégia que executa o mesmo job em múltiplas versões do Node.js simultaneamente
+- **Artefatos** — arquivos gerados durante a pipeline e armazenados para consulta posterior
+- **npm ci** — instalação limpa e reproduzível das dependências baseada no `package-lock.json`
+- **Concurrency** — evita execuções simultâneas conflitantes da mesma pipeline
+- **Timeout** — tempo máximo de execução para evitar pipelines travadas
+- **Permissions** — define as permissões mínimas necessárias para o workflow
