@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
     "url": "https://github.com/emanuelefraga/pgats-servico-de-pagamento/issues"
   },
   "homepage": "https://github.com/emanuelefraga/pgats-servico-de-pagamento#readme",
-  "dependencies": {
+  "devDependencies": {
     "mocha": "^11.7.6"
   }
 }

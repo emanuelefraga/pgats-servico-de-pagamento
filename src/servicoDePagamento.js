@@ -5,12 +5,12 @@ export default class servicoDePagamento {
     this.#pagamentos = [];
   }
   pagar(codigo, empresa, valor) {
-    const categoria = valor > 100 ? 'caro' : 'padrão';
+    const categoria = valor > 100 ? 'cara' : 'padrão';
 
     this.#pagamentos.push({
-      codigoDeBarras: codigo,
-      nomeDaEmpresa: empresa,
-      valorDoPagamento: valor,
+      codigoBarras: codigo,
+      empresa: empresa,
+      valor: valor,
       categoria: categoria
     });
   }
@@ -19,6 +19,6 @@ export default class servicoDePagamento {
     if (this.#pagamentos.length === 0) {
       throw new Error("Nenhum pagamento realizado.");
     }
-    return this.#pagamentos;
+    return this.#pagamentos[this.#pagamentos.length - 1];
   }
 }

@@ -9,14 +9,13 @@ describe('Testes do Serviço de Pagamento', function () {
 
         //Act
         servico.pagar('9876-1234-8523', 'Empresa de Biscoito', 158.60)
-        const valorPago = servico.consultar();
-        const pagamentoRealizado = valorPago.at(-1);
+        const pagamentoRealizado = servico.consultar();
 
         //Assert
-        assert.equal(pagamentoRealizado.codigoDeBarras, '9876-1234-8523');
-        assert.equal(pagamentoRealizado.nomeDaEmpresa, 'Empresa de Biscoito');
-        assert.equal(pagamentoRealizado.valorDoPagamento, 158.60);
-        assert.equal(pagamentoRealizado.categoria, 'caro')
+        assert.equal(pagamentoRealizado.codigoBarras, '9876-1234-8523');
+        assert.equal(pagamentoRealizado.empresa, 'Empresa de Biscoito');
+        assert.equal(pagamentoRealizado.valor, 158.60);
+        assert.equal(pagamentoRealizado.categoria, 'cara')
 
     });
 
@@ -27,13 +26,12 @@ describe('Testes do Serviço de Pagamento', function () {
 
         //Act
         servico.pagar('8547-3695-8125', 'Empresa de Bolos', 98.54)
-        const valorPago = servico.consultar();
-        const pagamentoRealizado = valorPago.at(-1);
+        const pagamentoRealizado = servico.consultar();
 
         //Assert
-        assert.equal(pagamentoRealizado.codigoDeBarras, '8547-3695-8125')
-        assert.equal(pagamentoRealizado.nomeDaEmpresa, 'Empresa de Bolos')
-        assert.equal(pagamentoRealizado.valorDoPagamento, 98.54)
+        assert.equal(pagamentoRealizado.codigoBarras, '8547-3695-8125')
+        assert.equal(pagamentoRealizado.empresa, 'Empresa de Bolos')
+        assert.equal(pagamentoRealizado.valor, 98.54)
         assert.equal(pagamentoRealizado.categoria, 'padrão')
 
     });
@@ -45,13 +43,12 @@ describe('Testes do Serviço de Pagamento', function () {
 
         //Act
         servico.pagar('2584-9631-7548', 'Empresa de Sucos', 100)
-        const valorPago = servico.consultar();
-        const pagamentoRealizado = valorPago.at(-1);
-
+        const pagamentoRealizado = servico.consultar();
+    
         //Assert
-        assert.equal(pagamentoRealizado.codigoDeBarras, '2584-9631-7548')
-        assert.equal(pagamentoRealizado.nomeDaEmpresa, 'Empresa de Sucos')
-        assert.equal(pagamentoRealizado.valorDoPagamento, 100)
+        assert.equal(pagamentoRealizado.codigoBarras, '2584-9631-7548')
+        assert.equal(pagamentoRealizado.empresa, 'Empresa de Sucos')
+        assert.equal(pagamentoRealizado.valor, 100)
         assert.equal(pagamentoRealizado.categoria, 'padrão')
 
     });
@@ -65,13 +62,12 @@ describe('Testes do Serviço de Pagamento', function () {
         servico.pagar('2584-9631-7548', 'Empresa de Sucos', 100)
         servico.pagar('8547-3695-8125', 'Empresa de Bolos', 98.54)
         servico.pagar('9876-1234-8523', 'Empresa de Biscoito', 158.60)
-        const valorPago = servico.consultar();
-        const ultimoPagamento = valorPago.at(-1);
-
+        const ultimoPagamento = servico.consultar();
+       
         //Assert
-        assert.equal(ultimoPagamento.codigoDeBarras, '9876-1234-8523')
-        assert.equal(ultimoPagamento.nomeDaEmpresa, 'Empresa de Biscoito')
-        assert.equal(ultimoPagamento.valorDoPagamento, 158.60)
+        assert.equal(ultimoPagamento.codigoBarras, '9876-1234-8523')
+        assert.equal(ultimoPagamento.empresa, 'Empresa de Biscoito')
+        assert.equal(ultimoPagamento.valor, 158.60)
 
     });
 
