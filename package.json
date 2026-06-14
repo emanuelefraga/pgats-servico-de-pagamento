@@ -1,7 +1,7 @@
 {
   "name": "pgats-servico-de-pagamento",
   "version": "1.0.0",
-  "description": "",
+  "description": "Serviço de pagamento com testes automatizados",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
