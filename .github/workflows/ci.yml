@@ -5,7 +5,7 @@ on:
     branches:
       - integracaocontinua-github-actions
   schedule:
-    - cron: '0 8 * * 1'
+  - cron: '0 16 * * *'
   workflow_dispatch:
 
 jobs:
