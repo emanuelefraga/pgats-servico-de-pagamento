@@ -4,7 +4,8 @@
   "description": "Serviço de pagamento com testes automatizados",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "test:report": "mocha --reporter json --reporter-option output=test-results/relatorio.json"
   },
   "repository": {
     "type": "git",

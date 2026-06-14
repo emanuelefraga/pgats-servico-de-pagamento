@@ -50,7 +50,9 @@ jobs:
 
       # executar os testes
       - name: Executando testes
-        run: npm test
+        run: |
+          mkdir -p test-results
+          npm run test:report
         
       # salvar relatório
       - name: Salvando relatório de testes

@@ -56,8 +56,10 @@ jobs:
 
       # executar os testes
       - name: Executar testes
-        run: npm test
-        
+        run: |
+          mkdir -p test-results
+          npm run test:report
+
       # salvar relatório
       - name: Salvando relatório de testes
         uses: actions/upload-artifact@v4
