@@ -1,6 +1,6 @@
-# CI de Nível 02 - Execução Agendada
+# CI - Serviço de Pagamento - Pipeline Completa
 # nome da pipeline
-name: 'N2 - Execução Agendada'
+name: 'CI - Pipeline Completa'
 
 # define as permissões mínimas que o workflow terá
 permissions:
@@ -8,18 +8,26 @@ permissions:
 
 # gatilhos / triggers - regras de disparo
 on:
+
+  # execução por push na main
   push:
     branches:
       - main
+
+  # execução por pull request na main
   pull_request:
     branches:
       - main
+
+  # execução manual
   workflow_dispatch:
+
+  # execução agendada
   schedule:
 
     # cronograma de execução
     # 1 - minuto, 2 - hora, 3 - dia do mês, 4 - mês, 5 - dia da semana
-    # roda hoje às 19h58 de Brasília (22h58 UTC) para evidência
+    # roda às 19h58 de Brasília (22h58 UTC) para evidência
     - cron: '58 22 * * *'
 
     # roda toda sexta-feira à meia noite UTC
@@ -27,7 +35,7 @@ on:
 
 # evita múltiplas execuções simultâneas para a mesma branch
 concurrency:
-  group: ci-scheduled-${{ github.ref }}
+  group: ci-${{ github.ref }}
 
 # tarefas dentro da pipeline = jobs
 jobs:
@@ -68,11 +76,11 @@ jobs:
         run: |
           mkdir -p test-results
           npm run test:report
-          
+
       # salvar relatório
       - name: Salvando relatório de testes
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: Relatorio-Testes-N2-Node-${{ matrix.node-version }}
+          name: Relatorio-Testes-Node-${{ matrix.node-version }}
           path: ./test-results

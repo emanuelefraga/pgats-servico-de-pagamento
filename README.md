@@ -40,9 +40,7 @@ O relatório será salvo em `test-results/relatorio.json`.
 
 ├── .github/
 │   └── workflows/
-│       ├── 1-exec-manual.yml       ← execução manual
-│       ├── 2-exec-scheduled.yml    ← execução agendada
-│       └── 3-exec-push.yml         ← execução por push
+│       └── ci.yml       ← execução manual, agendada e por push
 ├── src/
 │   └── servicoDePagamento.js
 ├── test/
@@ -52,9 +50,9 @@ O relatório será salvo em `test-results/relatorio.json`.
 
 ## Pipelines de Integração Contínua
 
-As pipelines estão separadas em três arquivos dentro de `.github/workflows/`, cada uma com uma responsabilidade específica.
+As pipelines estão juntas no arquivo (`ci.yml`) dentro de `.github/workflows/`, que separa com comentários os tipos de execução, cada uma com uma responsabilidade específica.
 
-### Execução Manual (`1-exec-manual.yml`)
+### Execução Manual
 
 Disparada manualmente pelo usuário diretamente na aba **Actions** do GitHub.
 
@@ -64,19 +62,19 @@ Disparada manualmente pelo usuário diretamente na aba **Actions** do GitHub.
 | Node.js | 18.x, 20.x, 22.x (matrix) |
 | Timeout | 15 minutos |
 
-### Execução Agendada (`2-exec-scheduled.yml`)
+### Execução Agendada 
 
 Disparada automaticamente em horários fixos, sem necessidade de intervenção humana.
 
 | Configuração | Valor |
 |---|---|
 | Trigger | `schedule` |
-| Agendamento 1 | A cada 30 minutos (`*/30 * * * *`) |
+| Agendamento 1 | Às 19h58 de Brasília (22h58 UTC) (`58 22 * * *`) |
 | Agendamento 2 | Toda sexta-feira à meia-noite UTC (`0 0 * * 5`) |
 | Node.js | 18.x, 20.x, 22.x (matrix) |
 | Timeout | 15 minutos |
 
-### Execução por Push (`3-exec-push.yml`)
+### Execução por Push
 
 Disparada automaticamente sempre que houver um push ou pull request na branch `main`.
 
@@ -85,14 +83,6 @@ Disparada automaticamente sempre que houver um push ou pull request na branch `m
 | Trigger | `push` e `pull_request` na branch `main` |
 | Node.js | 18.x, 20.x, 22.x (matrix) |
 | Timeout | 15 minutos |
-
-## Etapas comuns às três pipelines
-
-1. **Checkout do código** — clona o repositório no ambiente de execução
-2. **Setup Node.js** — configura a versão do Node.js definida na matrix
-3. **Instalar dependências** — executa `npm ci` para instalação limpa e reproduzível
-4. **Executar testes** — roda o Mocha e gera o relatório em `test-results/`
-5. **Armazenar relatório** — faz upload do relatório como artefato da pipeline
 
 ## Relatório de testes
 
