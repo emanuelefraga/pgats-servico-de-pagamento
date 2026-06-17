@@ -38,15 +38,18 @@ O relatório será salvo em `test-results/relatorio.json`.
 
 ## Estrutura do projeto
 
+```
+pgats-servico-de-pagamento/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml       ← execução manual, agendada e por push
+│       └── ci.yml          ← execução manual, agendada e por push
 ├── src/
 │   └── servicoDePagamento.js
 ├── test/
 │   └── servicoDePagamento.test.js
 ├── package.json
 └── README.md
+```
 
 ## Pipelines de Integração Contínua
 
